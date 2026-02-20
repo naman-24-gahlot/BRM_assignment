@@ -1,90 +1,93 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AI Study Research | Executive Dashboard</title>
+<meta charset="UTF-8">
+<title>AI Study Research | Executive Dashboard</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', sans-serif;
-            background: #0f172a;
-            color: #e2e8f0;
-        }
+<style>
 
-        header {
-            padding: 20px 40px;
-            background: #111827;
-            font-size: 22px;
-            font-weight: bold;
-        }
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg,#0f172a,#1e293b);
+    color: #e2e8f0;
+}
 
-        .tabs {
-            display: flex;
-            background: #1e293b;
-        }
+header {
+    padding: 25px 40px;
+    font-size: 24px;
+    font-weight: 600;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(6px);
+}
 
-        .tab {
-            padding: 15px 25px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+.tabs {
+    display: flex;
+    background: #111827;
+}
 
-        .tab:hover {
-            background: #334155;
-        }
+.tab {
+    padding: 15px 30px;
+    cursor: pointer;
+    transition: 0.3s;
+}
 
-        .active {
-            background: #2563eb;
-        }
+.tab:hover {
+    background: #1f2937;
+}
 
-        .container {
-            padding: 30px 40px;
-        }
+.active {
+    background: #2563eb;
+}
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-        }
+.container {
+    padding: 40px;
+}
 
-        .card {
-            background: #1e293b;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0px 4px 20px rgba(0,0,0,0.4);
-        }
+.hidden { display:none; }
 
-        .metric-value {
-            font-size: 28px;
-            font-weight: bold;
-            margin-top: 10px;
-        }
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
+    gap: 20px;
+}
 
-        canvas {
-            background: #1e293b;
-            padding: 15px;
-            border-radius: 12px;
-            margin-top: 20px;
-        }
+.card {
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+}
 
-        .hidden { display: none; }
+.metric {
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 10px;
+}
 
-        h2 {
-            margin-top: 40px;
-        }
+canvas {
+    margin-top: 30px;
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 14px;
+}
 
-        .summary-box {
-            background: #1e293b;
-            padding: 20px;
-            border-radius: 12px;
-            margin-top: 20px;
-            line-height: 1.6;
-        }
+.question {
+    margin-bottom: 18px;
+}
 
-    </style>
+.summary {
+    margin-top: 30px;
+    background:#1e293b;
+    padding:20px;
+    border-radius:12px;
+    line-height:1.6;
+}
+
+</style>
 </head>
 
 <body>
@@ -94,188 +97,184 @@ AI-Based Study Tools Impact Analysis Dashboard
 </header>
 
 <div class="tabs">
-    <div class="tab active" onclick="showTab('questionnaire', this)">Questionnaire</div>
-    <div class="tab" onclick="showTab('dashboard', this)">Analytics Dashboard</div>
+    <div class="tab active" onclick="showTab('questionnaire',this)">Questionnaire</div>
+    <div class="tab" onclick="showTab('dashboard',this)">Analytics Dashboard</div>
 </div>
+
+<!-- QUESTIONNAIRE TAB -->
 
 <div id="questionnaire" class="container">
-    <h2>Research Instrument Overview</h2>
 
-    <div class="summary-box">
-        <b>Research Objective:</b><br>
-        To evaluate the impact of AI-based study tools on academic performance,
-        productivity, and behavioral changes among undergraduate students.
-        <br><br>
-        <b>Methodology:</b><br>
-        • Research Type: Quantitative<br>
-        • Sampling: Convenience Sampling<br>
-        • Sample Size: 250 Students<br>
-        • Measurement Scale: Nominal, Ordinal (Likert), Ratio<br>
-        • Tools Used: Structured Questionnaire
-        <br><br>
-        <b>Key Variables:</b><br>
-        Demographics, CGPA, Study Hours, AI Usage Frequency, Assignment Time,
-        Satisfaction, Dependency, Grade Impact.
-    </div>
+<h2>Complete Research Questionnaire</h2>
+
+<div class="question"><b>Section A: Demographics</b></div>
+<div class="question">1. Gender</div>
+<div class="question">2. Age</div>
+<div class="question">3. Field of Study</div>
+<div class="question">4. Year of Study</div>
+<div class="question">5. Residence Type</div>
+
+<div class="question"><b>Section B: Academic Background</b></div>
+<div class="question">6. Current CGPA</div>
+<div class="question">7. Study Hours per Week</div>
+<div class="question">8. Assignments per Month</div>
+<div class="question">9. Self-Rated Academic Performance (1–5)</div>
+
+<div class="question"><b>Section C: AI Usage</b></div>
+<div class="question">10. Do you use AI Tools?</div>
+<div class="question">11. Primary Tool Used</div>
+<div class="question">12. Usage Frequency</div>
+<div class="question">13. AI Hours per Week</div>
+<div class="question">14. Purpose of Usage</div>
+
+<div class="question"><b>Section D: Productivity</b></div>
+<div class="question">15. Assignment Time Before AI</div>
+<div class="question">16. Assignment Time After AI</div>
+<div class="question">17. Productivity Improvement (1–5)</div>
+<div class="question">18. Quality Improvement (1–5)</div>
+<div class="question">19. Concept Understanding (1–5)</div>
+
+<div class="question"><b>Section E: Academic Impact</b></div>
+<div class="question">20. Grade Impact</div>
+<div class="question">21. % Improvement</div>
+
+<div class="question"><b>Section F: Ethical Concerns</b></div>
+<div class="question">22. Dependency Level (1–5)</div>
+<div class="question">23. Thinking Skill Reduction (1–5)</div>
+<div class="question">24. Regulation Support (1–5)</div>
+
+<div class="question"><b>Section G: Overall Satisfaction</b></div>
+<div class="question">25. Overall Satisfaction (1–5)</div>
+
 </div>
+
+<!-- DASHBOARD TAB -->
 
 <div id="dashboard" class="container hidden">
 
-    <div class="grid">
-        <div class="card">
-            AI Adoption Rate
-            <div id="adoptionRate" class="metric-value">--</div>
-        </div>
+<div class="grid">
+<div class="card">AI Adoption Rate<div id="adopt" class="metric">--</div></div>
+<div class="card">Avg CGPA (AI)<div id="avgAI" class="metric">--</div></div>
+<div class="card">Avg CGPA (Non-AI)<div id="avgNon" class="metric">--</div></div>
+<div class="card">Avg Time Reduction<div id="timeRed" class="metric">--</div></div>
+<div class="card">Correlation (AI Hours vs CGPA)<div id="corr" class="metric">--</div></div>
+<div class="card">Avg Satisfaction<div id="sat" class="metric">--</div></div>
+</div>
 
-        <div class="card">
-            Avg CGPA (AI Users)
-            <div id="avgAI" class="metric-value">--</div>
-        </div>
+<canvas id="usageChart"></canvas>
+<canvas id="cgpaChart"></canvas>
+<canvas id="impactChart"></canvas>
 
-        <div class="card">
-            Avg CGPA (Non Users)
-            <div id="avgNon" class="metric-value">--</div>
-        </div>
-
-        <div class="card">
-            Avg Time Reduction
-            <div id="timeReduction" class="metric-value">--</div>
-        </div>
-
-        <div class="card">
-            Correlation (AI Hours vs CGPA)
-            <div id="correlation" class="metric-value">--</div>
-        </div>
-
-        <div class="card">
-            Avg Satisfaction
-            <div id="avgSatisfaction" class="metric-value">--</div>
-        </div>
-    </div>
-
-    <h2>Usage Distribution</h2>
-    <canvas id="usageChart"></canvas>
-
-    <h2>CGPA Comparison</h2>
-    <canvas id="cgpaChart"></canvas>
-
-    <h2>Grade Impact Perception</h2>
-    <canvas id="impactChart"></canvas>
-
-    <h2>Executive Conclusion</h2>
-    <div id="conclusion" class="summary-box"></div>
+<div id="summary" class="summary"></div>
 
 </div>
 
 <script>
 
-function showTab(id, element) {
-    document.getElementById("questionnaire").classList.add("hidden");
-    document.getElementById("dashboard").classList.add("hidden");
-    document.getElementById(id).classList.remove("hidden");
-
-    document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
-    element.classList.add("active");
+function showTab(id,el){
+document.getElementById('questionnaire').classList.add('hidden');
+document.getElementById('dashboard').classList.add('hidden');
+document.getElementById(id).classList.remove('hidden');
+document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+el.classList.add('active');
 }
 
-Papa.parse("AI_Study_Research_Data_250.csv", {
-    download: true,
-    header: true,
-    complete: function(results) {
+Papa.parse("AI_Study_Research_Data_250.csv",{
+download:true,
+header:true,
+complete:function(res){
 
-        let data = results.data.filter(row => row.CGPA);
+let data=res.data.filter(r=>r.CGPA);
+let ai=data.filter(d=>d.UsesAI==1);
+let non=data.filter(d=>d.UsesAI==0);
 
-        let total = data.length;
-        let aiUsers = data.filter(d => d.UsesAI == 1);
-        let nonUsers = data.filter(d => d.UsesAI == 0);
+let adoption=(ai.length/data.length*100).toFixed(1);
+document.getElementById("adopt").innerText=adoption+"%";
 
-        let adoption = (aiUsers.length / total * 100).toFixed(1);
-        document.getElementById("adoptionRate").innerText = adoption + "%";
+let avgAI=ai.reduce((a,d)=>a+parseFloat(d.CGPA),0)/ai.length;
+let avgNon=non.reduce((a,d)=>a+parseFloat(d.CGPA),0)/non.length;
 
-        let avgAI = aiUsers.reduce((a,d)=>a+parseFloat(d.CGPA),0)/aiUsers.length;
-        let avgNon = nonUsers.reduce((a,d)=>a+parseFloat(d.CGPA),0)/nonUsers.length;
+document.getElementById("avgAI").innerText=avgAI.toFixed(2);
+document.getElementById("avgNon").innerText=avgNon.toFixed(2);
 
-        document.getElementById("avgAI").innerText = avgAI.toFixed(2);
-        document.getElementById("avgNon").innerText = avgNon.toFixed(2);
+let red=ai.reduce((a,d)=>a+(d.TimeBefore-d.TimeAfter),0)/ai.length;
+document.getElementById("timeRed").innerText=red.toFixed(2)+" hrs";
 
-        let reduction = aiUsers.reduce((a,d)=>
-            a + (parseFloat(d.TimeBefore)-parseFloat(d.TimeAfter)),0)/aiUsers.length;
+let hours=ai.map(d=>parseFloat(d.AIHours));
+let cgpa=ai.map(d=>parseFloat(d.CGPA));
 
-        document.getElementById("timeReduction").innerText = reduction.toFixed(2) + " hrs";
+function corr(x,y){
+let n=x.length;
+let avgX=x.reduce((a,b)=>a+b)/n;
+let avgY=y.reduce((a,b)=>a+b)/n;
+let num=0,denX=0,denY=0;
+for(let i=0;i<n;i++){
+num+=(x[i]-avgX)*(y[i]-avgY);
+denX+=(x[i]-avgX)**2;
+denY+=(y[i]-avgY)**2;
+}
+return num/Math.sqrt(denX*denY);
+}
 
-        function correlation(x, y) {
-            let n = x.length;
-            let avgX = x.reduce((a,b)=>a+b)/n;
-            let avgY = y.reduce((a,b)=>a+b)/n;
-            let num = 0, denX = 0, denY = 0;
-            for(let i=0;i<n;i++){
-                num += (x[i]-avgX)*(y[i]-avgY);
-                denX += (x[i]-avgX)**2;
-                denY += (y[i]-avgY)**2;
-            }
-            return num / Math.sqrt(denX*denY);
-        }
+let correlation=corr(hours,cgpa);
+document.getElementById("corr").innerText=correlation.toFixed(2);
 
-        let hours = aiUsers.map(d=>parseFloat(d.AIHours));
-        let cgpa = aiUsers.map(d=>parseFloat(d.CGPA));
-        let corr = correlation(hours,cgpa);
+let sat=ai.reduce((a,d)=>a+parseFloat(d.Satisfaction),0)/ai.length;
+document.getElementById("sat").innerText=sat.toFixed(2);
 
-        document.getElementById("correlation").innerText = corr.toFixed(2);
+new Chart(document.getElementById("usageChart"),{
+type:'bar',
+data:{
+labels:["Rarely","Sometimes","Often","Daily"],
+datasets:[{
+label:"Usage Frequency",
+data:[
+ai.filter(d=>d.Frequency==1).length,
+ai.filter(d=>d.Frequency==2).length,
+ai.filter(d=>d.Frequency==3).length,
+ai.filter(d=>d.Frequency==4).length
+],
+backgroundColor:"#3b82f6"
+}]
+}
+});
 
-        let avgSat = aiUsers.reduce((a,d)=>a+parseFloat(d.Satisfaction),0)/aiUsers.length;
-        document.getElementById("avgSatisfaction").innerText = avgSat.toFixed(2);
+new Chart(document.getElementById("cgpaChart"),{
+type:'bar',
+data:{
+labels:["AI Users","Non-AI Users"],
+datasets:[{
+label:"Average CGPA",
+data:[avgAI,avgNon],
+backgroundColor:["#22c55e","#ef4444"]
+}]
+}
+});
 
-        new Chart(document.getElementById("usageChart"), {
-            type: 'bar',
-            data: {
-                labels: ["Never","Rarely","Sometimes","Often","Daily"],
-                datasets: [{
-                    label: "Usage Frequency",
-                    data: [0,0,0,0,0].map((_,i)=>
-                        aiUsers.filter(d=>d.Frequency==i).length),
-                    backgroundColor: "#3b82f6"
-                }]
-            }
-        });
+new Chart(document.getElementById("impactChart"),{
+type:'doughnut',
+data:{
+labels:["Negative","No Change","Positive"],
+datasets:[{
+data:[
+data.filter(d=>d.GradeImpact<=2).length,
+data.filter(d=>d.GradeImpact==3).length,
+data.filter(d=>d.GradeImpact>=4).length
+],
+backgroundColor:["#ef4444","#facc15","#22c55e"]
+}]
+}
+});
 
-        new Chart(document.getElementById("cgpaChart"), {
-            type: 'bar',
-            data: {
-                labels: ["AI Users","Non Users"],
-                datasets: [{
-                    label: "Average CGPA",
-                    data: [avgAI,avgNon],
-                    backgroundColor: ["#22c55e","#ef4444"]
-                }]
-            }
-        });
+document.getElementById("summary").innerHTML=
+"<b>Executive Insight:</b><br><br>"+
+"AI adoption stands at "+adoption+"%. "+
+"Students using AI demonstrate higher academic performance on average. "+
+"There is a positive correlation ("+correlation.toFixed(2)+") between AI usage hours and CGPA. "+
+"Assignment completion time reduces significantly, indicating efficiency gains. "+
+"Overall satisfaction levels remain high, suggesting strong acceptance of AI tools.";
 
-        new Chart(document.getElementById("impactChart"), {
-            type: 'pie',
-            data: {
-                labels: ["Decreased","No Change","Improved"],
-                datasets: [{
-                    data: [
-                        data.filter(d=>d.GradeImpact<=2).length,
-                        data.filter(d=>d.GradeImpact==3).length,
-                        data.filter(d=>d.GradeImpact>=4).length
-                    ],
-                    backgroundColor: ["#ef4444","#facc15","#22c55e"]
-                }]
-            }
-        });
-
-        document.getElementById("conclusion").innerHTML =
-        "<b>Key Findings:</b><br><br>" +
-        "• AI adoption among students stands at " + adoption + "%.<br>" +
-        "• AI users show higher average CGPA compared to non-users.<br>" +
-        "• Assignment completion time reduced by approximately " + reduction.toFixed(2) + " hours.<br>" +
-        "• Positive correlation observed between AI usage hours and CGPA (" + corr.toFixed(2) + ").<br>" +
-        "• Majority students perceive academic improvement after AI usage.<br><br>" +
-        "<b>Business Insight:</b><br>" +
-        "AI-based educational tools enhance efficiency and performance. " +
-        "Strategic integration in academic ecosystems can improve student outcomes.";
-    }
+}
 });
 
 </script>
