@@ -2,24 +2,24 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>AI Study Tool Impact | Business Analytics Dashboard</title>
+<title>AI Study Tool Impact | Clean Business Dashboard</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
 body{
 margin:0;
 font-family:'Inter',sans-serif;
 background:#0a0a0a;
-color:#f5f5f5;
+color:#f2f2f2;
 }
 
 header{
 padding:25px 60px;
-font-size:24px;
+font-size:22px;
 background:#111;
 border-bottom:1px solid #222;
 }
@@ -33,11 +33,9 @@ border-bottom:1px solid #222;
 padding:15px 40px;
 cursor:pointer;
 color:#888;
-transition:0.3s;
 }
 
-.tab:hover{color:#fff;}
-.active{
+.tab.active{
 color:#fff;
 border-bottom:2px solid #fff;
 }
@@ -48,19 +46,6 @@ padding:40px 60px;
 
 .hidden{display:none;}
 
-.filters{
-margin-bottom:30px;
-}
-
-select{
-background:#111;
-color:#fff;
-border:1px solid #333;
-padding:8px;
-border-radius:8px;
-margin-right:10px;
-}
-
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
@@ -68,14 +53,11 @@ gap:20px;
 }
 
 .card{
-background:rgba(255,255,255,0.05);
-border:1px solid rgba(255,255,255,0.1);
+background:#111;
+border:1px solid #222;
 padding:20px;
-border-radius:18px;
-transition:0.3s;
+border-radius:12px;
 }
-
-.card:hover{transform:translateY(-4px);}
 
 .metric-title{
 font-size:13px;
@@ -83,9 +65,9 @@ color:#aaa;
 }
 
 .metric-value{
-font-size:28px;
+font-size:26px;
 font-weight:600;
-margin-top:6px;
+margin-top:5px;
 }
 
 .charts-grid{
@@ -97,22 +79,18 @@ margin-top:40px;
 
 canvas{
 width:100% !important;
-height:350px !important;
+height:320px !important;
 background:#111;
 padding:20px;
-border-radius:18px;
+border-radius:12px;
 }
 
 .summary{
 margin-top:40px;
-padding:30px;
+padding:25px;
 background:#111;
-border-radius:18px;
-line-height:1.7;
-}
-
-.question{
-margin-bottom:10px;
+border-radius:12px;
+line-height:1.6;
 }
 
 </style>
@@ -129,60 +107,32 @@ AI-Based Study Tool Impact | Business Analytics Dashboard
 <div class="tab" onclick="switchTab('dashboard',this)">Analytics</div>
 </div>
 
-<!-- QUESTIONNAIRE TAB -->
-
 <div id="questionnaire" class="container">
-
-<h2>Complete Research Questionnaire</h2>
-
-<div class="question">1–5: Demographics (Gender, Age, Field, Year, Residence)</div>
-<div class="question">6–9: Academic Metrics (CGPA, Study Hours, Assignments, Self-Rating)</div>
-<div class="question">10–14: AI Usage (Usage Status, Tool, Frequency, AI Hours, Purpose)</div>
-<div class="question">15–19: Productivity Metrics (Time Before/After, Productivity, Quality, Concept Understanding)</div>
-<div class="question">20–21: Academic Impact (Grade Change, % Improvement)</div>
-<div class="question">22–24: Ethical Concerns (Dependency, Thinking Reduction, Regulation)</div>
-<div class="question">25: Overall Satisfaction</div>
-
-<p><b>Research Design:</b> Quantitative | Correlational | Descriptive</p>
-<p><b>Sample Size:</b> 250 Students</p>
-
+<h3>Research Overview</h3>
+<p>Structured questionnaire measuring AI usage, academic performance, productivity and behavioral impact across 250 students.</p>
 </div>
-
-<!-- DASHBOARD TAB -->
 
 <div id="dashboard" class="container hidden">
 
-<div class="filters">
-<select id="fieldFilter"><option value="all">All Fields</option></select>
-<select id="yearFilter"><option value="all">All Years</option></select>
-<select id="aiFilter">
-<option value="all">All Students</option>
-<option value="1">AI Users Only</option>
-<option value="0">Non-AI Users Only</option>
-</select>
-</div>
-
 <div class="grid">
 
-<div class="card"><div class="metric-title">AI Adoption Rate</div><div id="adoption" class="metric-value">0</div></div>
-<div class="card"><div class="metric-title">CGPA Difference</div><div id="cgpaDiff" class="metric-value">0</div></div>
-<div class="card"><div class="metric-title">Efficiency Gain (%)</div><div id="efficiency" class="metric-value">0</div></div>
-<div class="card"><div class="metric-title">t-Statistic</div><div id="tstat" class="metric-value">0</div></div>
-<div class="card"><div class="metric-title">p-Value</div><div id="pvalue" class="metric-value">0</div></div>
-<div class="card"><div class="metric-title">Effect Size (Cohen's d)</div><div id="effectSize" class="metric-value">0</div></div>
-<div class="card"><div class="metric-title">Correlation</div><div id="correlation" class="metric-value">0</div></div>
-<div class="card"><div class="metric-title">R²</div><div id="r2" class="metric-value">0</div></div>
+<div class="card"><div class="metric-title">AI Adoption Rate</div><div id="adoption" class="metric-value">--</div></div>
+<div class="card"><div class="metric-title">Average CGPA (AI)</div><div id="avgAI" class="metric-value">--</div></div>
+<div class="card"><div class="metric-title">Average CGPA (Non-AI)</div><div id="avgNon" class="metric-value">--</div></div>
+<div class="card"><div class="metric-title">CGPA Difference</div><div id="diff" class="metric-value">--</div></div>
+<div class="card"><div class="metric-title">Efficiency Gain (%)</div><div id="efficiency" class="metric-value">--</div></div>
+<div class="card"><div class="metric-title">t-statistic</div><div id="tstat" class="metric-value">--</div></div>
+<div class="card"><div class="metric-title">p-value</div><div id="pvalue" class="metric-value">--</div></div>
+<div class="card"><div class="metric-title">Effect Size (Cohen's d)</div><div id="effect" class="metric-value">--</div></div>
 
 </div>
 
 <div class="charts-grid">
 
-<canvas id="regressionChart"></canvas>
-<canvas id="cgpaDistribution"></canvas>
-<canvas id="timeComparison"></canvas>
-<canvas id="fieldAdoption"></canvas>
-<canvas id="satisfactionTrend"></canvas>
-<canvas id="dependencyTrend"></canvas>
+<canvas id="cgpaChart"></canvas>
+<canvas id="timeChart"></canvas>
+<canvas id="impactChart"></canvas>
+<canvas id="fieldChart"></canvas>
 
 </div>
 
@@ -202,106 +152,57 @@ document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
 el.classList.add("active");
 }
 
-function animateValue(id,value){
-let obj=document.getElementById(id);
-obj.innerText=value.toFixed(2);
-}
-
-function applyFilters(){
-
-let data=fullData;
-
-let field=document.getElementById("fieldFilter").value;
-let year=document.getElementById("yearFilter").value;
-let ai=document.getElementById("aiFilter").value;
-
-if(field!="all") data=data.filter(d=>d.Field==field);
-if(year!="all") data=data.filter(d=>d.Year==year);
-if(ai!="all") data=data.filter(d=>d.UsesAI==ai);
-
-analyze(data);
-}
-
 function analyze(data){
 
 let ai=data.filter(d=>d.UsesAI==1);
 let non=data.filter(d=>d.UsesAI==0);
 
-if(ai.length<2 || non.length<2) return;
-
-let adoption=ai.length/data.length*100;
-animateValue("adoption",adoption);
+let adoption=(ai.length/data.length*100);
+document.getElementById("adoption").innerText=adoption.toFixed(1)+"%";
 
 let meanAI=ai.reduce((a,d)=>a+parseFloat(d.CGPA),0)/ai.length;
 let meanNon=non.reduce((a,d)=>a+parseFloat(d.CGPA),0)/non.length;
 
+document.getElementById("avgAI").innerText=meanAI.toFixed(2);
+document.getElementById("avgNon").innerText=meanNon.toFixed(2);
+
 let diff=meanAI-meanNon;
-animateValue("cgpaDiff",diff);
+document.getElementById("diff").innerText=diff.toFixed(2);
 
 let efficiency=ai.reduce((a,d)=>a+(d.TimeBefore-d.TimeAfter)/d.TimeBefore,0)/ai.length*100;
-animateValue("efficiency",efficiency);
+document.getElementById("efficiency").innerText=efficiency.toFixed(1)+"%";
 
 let varAI=ai.reduce((a,d)=>a+(d.CGPA-meanAI)**2,0)/(ai.length-1);
 let varNon=non.reduce((a,d)=>a+(d.CGPA-meanNon)**2,0)/(non.length-1);
 
 let pooledSD=Math.sqrt(((ai.length-1)*varAI+(non.length-1)*varNon)/(ai.length+non.length-2));
 let effect=diff/pooledSD;
-animateValue("effectSize",effect);
+document.getElementById("effect").innerText=effect.toFixed(2);
 
 let t=diff/Math.sqrt((varAI/ai.length)+(varNon/non.length));
-animateValue("tstat",t);
+document.getElementById("tstat").innerText=t.toFixed(2);
 
 let p=Math.exp(-0.717*Math.abs(t)-0.416*t*t);
-animateValue("pvalue",p);
+document.getElementById("pvalue").innerText=p.toFixed(4);
 
-let corr=correlation(
-ai.map(d=>parseFloat(d.AIHours)),
-ai.map(d=>parseFloat(d.CGPA))
-);
-animateValue("correlation",corr);
-
-animateValue("r2",corr*corr);
-
-drawCharts(ai,data);
-
-document.getElementById("summary").innerHTML=
-"<b>Executive Insight:</b><br><br>"+
-"AI adoption stands at "+adoption.toFixed(1)+"%. "+
-"AI users show a CGPA advantage of "+diff.toFixed(2)+". "+
-"Efficiency improves by "+efficiency.toFixed(1)+"%. "+
-"t="+t.toFixed(2)+", p="+p.toFixed(4)+". "+
-(effect>0.5?"Effect size indicates moderate-to-strong impact. ":"Effect size indicates small-to-moderate impact. ");
-
+drawCharts(ai,data,meanAI,meanNon);
 }
 
-function correlation(x,y){
-let n=x.length;
-let avgX=x.reduce((a,b)=>a+b)/n;
-let avgY=y.reduce((a,b)=>a+b)/n;
-let num=0,denX=0,denY=0;
-for(let i=0;i<n;i++){
-num+=(x[i]-avgX)*(y[i]-avgY);
-denX+=(x[i]-avgX)**2;
-denY+=(y[i]-avgY)**2;
-}
-return num/Math.sqrt(denX*denY);
-}
+function drawCharts(ai,data,meanAI,meanNon){
 
-function drawCharts(ai,data){
-
-new Chart(document.getElementById("regressionChart"),{
-type:'scatter',
+new Chart(document.getElementById("cgpaChart"),{
+type:'bar',
 data:{
+labels:["AI Users","Non-AI Users"],
 datasets:[{
-label:'Students',
-data:ai.map(d=>({x:parseFloat(d.AIHours),y:parseFloat(d.CGPA)})),
-backgroundColor:'#fff'
+data:[meanAI,meanNon],
+backgroundColor:["#fff","#777"]
 }]
 },
 options:{responsive:true,maintainAspectRatio:false}
 });
 
-new Chart(document.getElementById("timeComparison"),{
+new Chart(document.getElementById("timeChart"),{
 type:'bar',
 data:{
 labels:["Before AI","After AI"],
@@ -310,7 +211,42 @@ data:[
 ai.reduce((a,d)=>a+parseFloat(d.TimeBefore),0)/ai.length,
 ai.reduce((a,d)=>a+parseFloat(d.TimeAfter),0)/ai.length
 ],
-backgroundColor:["#888","#fff"]
+backgroundColor:["#777","#fff"]
+}]
+},
+options:{responsive:true,maintainAspectRatio:false}
+});
+
+new Chart(document.getElementById("impactChart"),{
+type:'bar',
+data:{
+labels:["Negative","No Change","Positive"],
+datasets:[{
+data:[
+data.filter(d=>d.GradeImpact<=2).length,
+data.filter(d=>d.GradeImpact==3).length,
+data.filter(d=>d.GradeImpact>=4).length
+],
+backgroundColor:["#555","#888","#fff"]
+}]
+},
+options:{responsive:true,maintainAspectRatio:false}
+});
+
+let fields=[...new Set(data.map(d=>d.Field))];
+let adoptionRates=fields.map(f=>{
+let group=data.filter(d=>d.Field==f);
+let aiGroup=group.filter(d=>d.UsesAI==1);
+return aiGroup.length/group.length*100;
+});
+
+new Chart(document.getElementById("fieldChart"),{
+type:'bar',
+data:{
+labels:fields.map(f=>"Field "+f),
+datasets:[{
+data:adoptionRates,
+backgroundColor:"#fff"
 }]
 },
 options:{responsive:true,maintainAspectRatio:false}
@@ -322,33 +258,10 @@ Papa.parse("AI_Study_Research_Data_250.csv",{
 download:true,
 header:true,
 complete:function(res){
-
 fullData=res.data.filter(r=>r.CGPA);
-
-let fields=[...new Set(fullData.map(d=>d.Field))];
-let years=[...new Set(fullData.map(d=>d.Year))];
-
-fields.forEach(f=>{
-let opt=document.createElement("option");
-opt.value=f;
-opt.text="Field "+f;
-document.getElementById("fieldFilter").appendChild(opt);
-});
-
-years.forEach(y=>{
-let opt=document.createElement("option");
-opt.value=y;
-opt.text="Year "+y;
-document.getElementById("yearFilter").appendChild(opt);
-});
-
-applyFilters();
+analyze(fullData);
 }
 });
-
-document.getElementById("fieldFilter").onchange=applyFilters;
-document.getElementById("yearFilter").onchange=applyFilters;
-document.getElementById("aiFilter").onchange=applyFilters;
 
 </script>
 
