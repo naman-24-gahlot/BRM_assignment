@@ -2,56 +2,29 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>AI Study Analytics</title>
+<title>AI Study Advanced Analytics</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
 
 <style>
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
 
 body{
 margin:0;
 font-family:'Inter',sans-serif;
 background:#0a0a0a;
-color:#f5f5f5;
-overflow-x:hidden;
+color:#f2f2f2;
 }
 
 header{
-padding:30px 60px;
-font-size:26px;
-font-weight:600;
-letter-spacing:1px;
-background:linear-gradient(90deg,#111,#1c1c1c);
+padding:25px 60px;
+font-size:24px;
+background:#111;
 border-bottom:1px solid #222;
 }
 
-.tabs{
-display:flex;
-border-bottom:1px solid #222;
-}
-
-.tab{
-padding:15px 40px;
-cursor:pointer;
-color:#888;
-transition:0.3s;
-}
-
-.tab:hover{color:#fff;}
-.active{
-color:#fff;
-border-bottom:2px solid #fff;
-}
-
-.container{
-padding:50px 60px;
-animation:fadeIn 0.8s ease;
-}
-
-.hidden{display:none;}
+.container{padding:40px 60px;}
 
 .grid{
 display:grid;
@@ -60,48 +33,40 @@ gap:25px;
 }
 
 .card{
-background:rgba(255,255,255,0.04);
-border:1px solid rgba(255,255,255,0.08);
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.1);
 padding:25px;
 border-radius:18px;
-backdrop-filter:blur(12px);
-transition:0.4s;
+transition:0.3s;
 }
 
-.card:hover{
-transform:translateY(-5px);
-background:rgba(255,255,255,0.07);
-}
+.card:hover{transform:translateY(-4px);}
 
-.metric-title{
-font-size:14px;
-color:#aaa;
-}
+.metric-title{color:#aaa;font-size:14px;}
+.metric-value{font-size:30px;font-weight:600;margin-top:10px;}
 
-.metric-value{
-font-size:32px;
-font-weight:600;
-margin-top:8px;
+select{
+background:#111;
+color:#fff;
+border:1px solid #333;
+padding:8px;
+border-radius:8px;
+margin-right:10px;
 }
 
 canvas{
 margin-top:40px;
-background:rgba(255,255,255,0.03);
-padding:25px;
+background:#111;
+padding:20px;
 border-radius:18px;
 }
 
 .summary{
 margin-top:40px;
-padding:30px;
-background:rgba(255,255,255,0.05);
-border-radius:20px;
+padding:25px;
+background:#111;
+border-radius:18px;
 line-height:1.8;
-}
-
-@keyframes fadeIn{
-from{opacity:0;transform:translateY(20px);}
-to{opacity:1;transform:translateY(0);}
 }
 
 </style>
@@ -110,202 +75,202 @@ to{opacity:1;transform:translateY(0);}
 <body>
 
 <header>
-AI-Based Study Tool Impact | Business Analytics Dashboard
+AI-Based Study Tools | Advanced Business Analytics
 </header>
 
-<div class="tabs">
-<div class="tab active" onclick="switchTab('questionnaire',this)">Questionnaire</div>
-<div class="tab" onclick="switchTab('dashboard',this)">Analytics</div>
-</div>
+<div class="container">
 
-<div id="questionnaire" class="container">
-<h2>Research Instrument</h2>
-<p>This study uses a structured questionnaire (25 variables) measuring:</p>
-<ul>
-<li>Demographics (Nominal)</li>
-<li>Academic Metrics (Ratio)</li>
-<li>AI Usage Behavior (Ordinal + Ratio)</li>
-<li>Productivity Change (Before vs After)</li>
-<li>Behavioral & Ethical Impact (Likert Scale)</li>
-</ul>
-<p><b>Research Type:</b> Quantitative | Correlational | Descriptive</p>
-</div>
+<div>
+<select id="fieldFilter">
+<option value="all">All Fields</option>
+</select>
 
-<div id="dashboard" class="container hidden">
+<select id="yearFilter">
+<option value="all">All Years</option>
+</select>
+
+<select id="aiFilter">
+<option value="all">All Students</option>
+<option value="1">AI Users Only</option>
+<option value="0">Non-AI Users Only</option>
+</select>
+</div>
 
 <div class="grid">
 
 <div class="card">
 <div class="metric-title">AI Adoption Rate</div>
-<div id="adoption" class="metric-value">--</div>
+<div id="adoption" class="metric-value">0</div>
 </div>
 
 <div class="card">
-<div class="metric-title">CGPA Difference (AI - Non)</div>
-<div id="cgpaDiff" class="metric-value">--</div>
+<div class="metric-title">CGPA Difference</div>
+<div id="cgpaDiff" class="metric-value">0</div>
 </div>
 
 <div class="card">
-<div class="metric-title">Avg Time Efficiency Gain</div>
-<div id="efficiency" class="metric-value">--</div>
+<div class="metric-title">t-Statistic</div>
+<div id="tstat" class="metric-value">0</div>
 </div>
 
 <div class="card">
-<div class="metric-title">Correlation (AI Hours vs CGPA)</div>
-<div id="correlation" class="metric-value">--</div>
-</div>
-
-<div class="card">
-<div class="metric-title">Academic Improvement Rate</div>
-<div id="improveRate" class="metric-value">--</div>
-</div>
-
-<div class="card">
-<div class="metric-title">AI Intensity Index</div>
-<div id="intensity" class="metric-value">--</div>
+<div class="metric-title">p-Value</div>
+<div id="pvalue" class="metric-value">0</div>
 </div>
 
 </div>
 
-<canvas id="cgpaChart"></canvas>
-<canvas id="usageChart"></canvas>
-<canvas id="satisfactionChart"></canvas>
+<canvas id="regressionChart"></canvas>
 
-<div id="executive" class="summary"></div>
+<div id="summary" class="summary"></div>
 
 </div>
 
 <script>
 
-function switchTab(id,el){
-document.getElementById('questionnaire').classList.add('hidden');
-document.getElementById('dashboard').classList.add('hidden');
-document.getElementById(id).classList.remove('hidden');
-document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-el.classList.add('active');
+let fullData;
+
+function animateValue(id, end){
+let start=0;
+let duration=800;
+let stepTime=Math.abs(Math.floor(duration/end));
+let obj=document.getElementById(id);
+let timer=setInterval(()=>{
+start+=end/30;
+if(start>=end){
+start=end;
+clearInterval(timer);
+}
+obj.innerText=parseFloat(start).toFixed(2);
+},30);
+}
+
+function applyFilters(){
+let field=document.getElementById("fieldFilter").value;
+let year=document.getElementById("yearFilter").value;
+let ai=document.getElementById("aiFilter").value;
+
+let data=fullData;
+
+if(field!="all") data=data.filter(d=>d.Field==field);
+if(year!="all") data=data.filter(d=>d.Year==year);
+if(ai!="all") data=data.filter(d=>d.UsesAI==ai);
+
+analyze(data);
+}
+
+function analyze(data){
+
+let ai=data.filter(d=>d.UsesAI==1);
+let non=data.filter(d=>d.UsesAI==0);
+
+if(ai.length==0||non.length==0)return;
+
+let adoption=(ai.length/data.length*100);
+
+animateValue("adoption",adoption);
+
+let meanAI=ai.reduce((a,d)=>a+parseFloat(d.CGPA),0)/ai.length;
+let meanNon=non.reduce((a,d)=>a+parseFloat(d.CGPA),0)/non.length;
+let diff=meanAI-meanNon;
+
+animateValue("cgpaDiff",diff);
+
+let varAI=ai.reduce((a,d)=>a+(d.CGPA-meanAI)**2,0)/(ai.length-1);
+let varNon=non.reduce((a,d)=>a+(d.CGPA-meanNon)**2,0)/(non.length-1);
+
+let t=(diff)/Math.sqrt((varAI/ai.length)+(varNon/non.length));
+animateValue("tstat",t);
+
+let p=Math.exp(-0.717*Math.abs(t)-0.416*t*t); // approx
+animateValue("pvalue",p);
+
+drawRegression(ai);
+
+document.getElementById("summary").innerHTML=
+"<b>Hypothesis Testing:</b><br>"+
+"H0: No difference in CGPA between AI and Non-AI users.<br>"+
+"H1: Significant difference exists.<br><br>"+
+"t-statistic = "+t.toFixed(2)+" | p-value = "+p.toFixed(4)+"<br><br>"+
+(p<0.05?"Result: Reject H0 (Significant Difference Detected).":
+"Result: Fail to Reject H0 (No Significant Evidence).");
+
+}
+
+function drawRegression(ai){
+
+let x=ai.map(d=>parseFloat(d.AIHours));
+let y=ai.map(d=>parseFloat(d.CGPA));
+
+let n=x.length;
+let avgX=x.reduce((a,b)=>a+b)/n;
+let avgY=y.reduce((a,b)=>a+b)/n;
+
+let slope=(x.reduce((sum,xi,i)=>sum+(xi-avgX)*(y[i]-avgY),0))/
+(x.reduce((sum,xi)=>sum+(xi-avgX)**2,0));
+
+let intercept=avgY-slope*avgX;
+
+let regLine=x.map(xi=>slope*xi+intercept);
+
+new Chart(document.getElementById("regressionChart"),{
+type:'scatter',
+data:{
+datasets:[
+{
+label:'Students',
+data:x.map((xi,i)=>({x:xi,y:y[i]})),
+backgroundColor:'#fff'
+},
+{
+label:'Regression Line',
+data:x.map((xi,i)=>({x:xi,y:regLine[i]})),
+type:'line',
+borderColor:'#aaa',
+fill:false
+}
+]
+},
+options:{
+plugins:{legend:{labels:{color:"#fff"}}},
+scales:{
+x:{title:{display:true,text:"AI Hours",color:"#fff"},ticks:{color:"#aaa"}},
+y:{title:{display:true,text:"CGPA",color:"#fff"},ticks:{color:"#aaa"}}
+}
+}
+});
 }
 
 Papa.parse("AI_Study_Research_Data_250.csv",{
 download:true,
 header:true,
 complete:function(res){
+fullData=res.data.filter(r=>r.CGPA);
 
-let data=res.data.filter(r=>r.CGPA);
-let ai=data.filter(d=>d.UsesAI==1);
-let non=data.filter(d=>d.UsesAI==0);
+let fields=[...new Set(fullData.map(d=>d.Field))];
+let years=[...new Set(fullData.map(d=>d.Year))];
 
-let adoption=(ai.length/data.length*100).toFixed(1);
-document.getElementById("adoption").innerText=adoption+"%";
+fields.forEach(f=>{
+let opt=document.createElement("option");
+opt.value=f;
+opt.text="Field "+f;
+document.getElementById("fieldFilter").appendChild(opt);
+});
 
-let avgAI=ai.reduce((a,d)=>a+parseFloat(d.CGPA),0)/ai.length;
-let avgNon=non.reduce((a,d)=>a+parseFloat(d.CGPA),0)/non.length;
-let diff=(avgAI-avgNon).toFixed(2);
-document.getElementById("cgpaDiff").innerText=diff;
+years.forEach(y=>{
+let opt=document.createElement("option");
+opt.value=y;
+opt.text="Year "+y;
+document.getElementById("yearFilter").appendChild(opt);
+});
 
-let efficiency=(ai.reduce((a,d)=>a+(d.TimeBefore-d.TimeAfter)/d.TimeBefore,0)/ai.length*100).toFixed(1);
-document.getElementById("efficiency").innerText=efficiency+"%";
-
-let improveRate=(data.filter(d=>d.GradeImpact>=4).length/data.length*100).toFixed(1);
-document.getElementById("improveRate").innerText=improveRate+"%";
-
-let intensity=(ai.reduce((a,d)=>a+parseFloat(d.AIHours)*parseInt(d.Frequency),0)/ai.length).toFixed(1);
-document.getElementById("intensity").innerText=intensity;
-
-function corr(x,y){
-let n=x.length;
-let avgX=x.reduce((a,b)=>a+b)/n;
-let avgY=y.reduce((a,b)=>a+b)/n;
-let num=0,denX=0,denY=0;
-for(let i=0;i<n;i++){
-num+=(x[i]-avgX)*(y[i]-avgY);
-denX+=(x[i]-avgX)**2;
-denY+=(y[i]-avgY)**2;
-}
-return num/Math.sqrt(denX*denY);
-}
-
-let correlation=corr(
-ai.map(d=>parseFloat(d.AIHours)),
-ai.map(d=>parseFloat(d.CGPA))
-).toFixed(2);
-
-document.getElementById("correlation").innerText=correlation;
-
-new Chart(document.getElementById("cgpaChart"),{
-type:'bar',
-data:{
-labels:["AI Users","Non Users"],
-datasets:[{
-label:"Average CGPA",
-data:[avgAI,avgNon],
-backgroundColor:["#ffffff","#777"]
-}]
-},
-options:{
-plugins:{legend:{labels:{color:"#fff"}}},
-scales:{
-x:{ticks:{color:"#aaa"}},
-y:{ticks:{color:"#aaa"}}
-}
+applyFilters();
 }
 });
 
-new Chart(document.getElementById("usageChart"),{
-type:'line',
-data:{
-labels:["Rarely","Sometimes","Often","Daily"],
-datasets:[{
-label:"Usage Count",
-data:[
-ai.filter(d=>d.Frequency==1).length,
-ai.filter(d=>d.Frequency==2).length,
-ai.filter(d=>d.Frequency==3).length,
-ai.filter(d=>d.Frequency==4).length
-],
-borderColor:"#fff",
-tension:0.4
-}]
-},
-options:{
-plugins:{legend:{labels:{color:"#fff"}}},
-scales:{
-x:{ticks:{color:"#aaa"}},
-y:{ticks:{color:"#aaa"}}
-}
-}
-});
-
-new Chart(document.getElementById("satisfactionChart"),{
-type:'radar',
-data:{
-labels:["Productivity","Quality","Concept","Satisfaction"],
-datasets:[{
-data:[
-ai.reduce((a,d)=>a+parseFloat(d.ProductivityImprove),0)/ai.length,
-ai.reduce((a,d)=>a+parseFloat(d.QualityImprove),0)/ai.length,
-ai.reduce((a,d)=>a+parseFloat(d.ConceptHelp),0)/ai.length,
-ai.reduce((a,d)=>a+parseFloat(d.Satisfaction),0)/ai.length
-],
-borderColor:"#fff"
-}]
-},
-options:{
-plugins:{legend:{labels:{color:"#fff"}}},
-scales:{r:{grid:{color:"#444"},pointLabels:{color:"#aaa"}}}
-}
-});
-
-document.getElementById("executive").innerHTML=
-"<b>Executive Summary:</b><br><br>"+
-"AI adoption among students stands at "+adoption+"%. "+
-"The average CGPA advantage of AI users is "+diff+" points. "+
-"Productivity efficiency improves by approximately "+efficiency+"%. "+
-"A positive correlation ("+correlation+") indicates performance improvement with usage intensity. "+
-"Overall academic improvement perception stands at "+improveRate+"%. "+
-"These findings suggest structured AI integration enhances student performance while maintaining strong satisfaction levels.";
-
-}
-});
+document.getElementById("fieldFilter").onchange=applyFilters;
+document.getElementById("yearFilter").onchange=applyFilters;
+document.getElementById("aiFilter").onchange=applyFilters;
 
 </script>
 
