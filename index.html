@@ -190,54 +190,92 @@ drawCharts(ai,data,meanAI,meanNon);
 
 function drawCharts(ai,data,meanAI,meanNon){
 
+Chart.defaults.color = "#cccccc";
+
+/* 1️⃣ CGPA Comparison */
 new Chart(document.getElementById("cgpaChart"),{
 type:'bar',
 data:{
 labels:["AI Users","Non-AI Users"],
 datasets:[{
+label:"Average CGPA",
 data:[meanAI,meanNon],
-backgroundColor:["#fff","#777"]
+backgroundColor:["#ffffff","#777777"]
 }]
 },
-options:{responsive:true,maintainAspectRatio:false}
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{legend:{display:false}},
+scales:{
+y:{
+min:6,
+max:10,
+ticks:{stepSize:0.5}
+}
+}
+}
 });
+
+/* 2️⃣ Time Efficiency */
+let avgBefore = ai.reduce((a,d)=>a+parseFloat(d.TimeBefore),0)/ai.length;
+let avgAfter  = ai.reduce((a,d)=>a+parseFloat(d.TimeAfter),0)/ai.length;
 
 new Chart(document.getElementById("timeChart"),{
 type:'bar',
 data:{
 labels:["Before AI","After AI"],
 datasets:[{
-data:[
-ai.reduce((a,d)=>a+parseFloat(d.TimeBefore),0)/ai.length,
-ai.reduce((a,d)=>a+parseFloat(d.TimeAfter),0)/ai.length
-],
-backgroundColor:["#777","#fff"]
+label:"Hours per Assignment",
+data:[avgBefore,avgAfter],
+backgroundColor:["#888","#ffffff"]
 }]
 },
-options:{responsive:true,maintainAspectRatio:false}
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{legend:{display:false}},
+scales:{
+y:{
+min:0,
+max:Math.ceil(avgBefore)+2
+}
+}
+}
 });
+
+/* 3️⃣ Academic Impact Distribution */
+let negative = data.filter(d=>d.GradeImpact<=2).length;
+let neutral  = data.filter(d=>d.GradeImpact==3).length;
+let positive = data.filter(d=>d.GradeImpact>=4).length;
 
 new Chart(document.getElementById("impactChart"),{
 type:'bar',
 data:{
 labels:["Negative","No Change","Positive"],
 datasets:[{
-data:[
-data.filter(d=>d.GradeImpact<=2).length,
-data.filter(d=>d.GradeImpact==3).length,
-data.filter(d=>d.GradeImpact>=4).length
-],
-backgroundColor:["#555","#888","#fff"]
+label:"Student Count",
+data:[negative,neutral,positive],
+backgroundColor:["#555","#888","#ffffff"]
 }]
 },
-options:{responsive:true,maintainAspectRatio:false}
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{legend:{display:false}},
+scales:{
+y:{beginAtZero:true}
+}
+}
 });
 
+/* 4️⃣ Field-wise AI Adoption */
 let fields=[...new Set(data.map(d=>d.Field))];
-let adoptionRates=fields.map(f=>{
+
+let adoptionRates = fields.map(f=>{
 let group=data.filter(d=>d.Field==f);
 let aiGroup=group.filter(d=>d.UsesAI==1);
-return aiGroup.length/group.length*100;
+return (aiGroup.length/group.length)*100;
 });
 
 new Chart(document.getElementById("fieldChart"),{
@@ -245,11 +283,77 @@ type:'bar',
 data:{
 labels:fields.map(f=>"Field "+f),
 datasets:[{
+label:"AI Adoption %",
 data:adoptionRates,
-backgroundColor:"#fff"
+backgroundColor:"#ffffff"
 }]
 },
-options:{responsive:true,maintainAspectRatio:false}
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{legend:{display:false}},
+scales:{
+y:{
+min:0,
+max:100
+}
+}
+}
+});
+
+/* 5️⃣ Satisfaction & Productivity Trend */
+let avgSatisfaction = ai.reduce((a,d)=>a+parseFloat(d.Satisfaction),0)/ai.length;
+let avgProductivity = ai.reduce((a,d)=>a+parseFloat(d.ProductivityImprove),0)/ai.length;
+let avgQuality = ai.reduce((a,d)=>a+parseFloat(d.QualityImprove),0)/ai.length;
+let avgConcept = ai.reduce((a,d)=>a+parseFloat(d.ConceptHelp),0)/ai.length;
+
+new Chart(document.getElementById("cgpaDistribution"),{
+type:'bar',
+data:{
+labels:["Satisfaction","Productivity","Quality","Concept Understanding"],
+datasets:[{
+data:[avgSatisfaction,avgProductivity,avgQuality,avgConcept],
+backgroundColor:"#ffffff"
+}]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{legend:{display:false}},
+scales:{
+y:{
+min:1,
+max:5
+}
+}
+}
+});
+
+/* 6️⃣ Dependency & Critical Thinking */
+let avgDependency = ai.reduce((a,d)=>a+parseFloat(d.Dependency),0)/ai.length;
+let avgThinkingReduction = ai.reduce((a,d)=>a+parseFloat(d.ThinkingReduction),0)/ai.length;
+let avgRegulation = ai.reduce((a,d)=>a+parseFloat(d.RegulationSupport),0)/ai.length;
+
+new Chart(document.getElementById("timeComparison"),{
+type:'bar',
+data:{
+labels:["Dependency","Thinking Reduction","Support Regulation"],
+datasets:[{
+data:[avgDependency,avgThinkingReduction,avgRegulation],
+backgroundColor:["#ffffff","#999","#666"]
+}]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{legend:{display:false}},
+scales:{
+y:{
+min:1,
+max:5
+}
+}
+}
 });
 
 }
@@ -267,3 +371,4 @@ analyze(fullData);
 
 </body>
 </html>
+
