@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>AI Study Tool Impact | Clean Business Dashboard</title>
+<title>AI Study Tool Impact | Business Analytics Dashboard</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
@@ -13,7 +13,7 @@
 body{
 margin:0;
 font-family:'Inter',sans-serif;
-background:#0a0a0a;
+background:#0b0b0b;
 color:#f2f2f2;
 }
 
@@ -72,14 +72,14 @@ margin-top:5px;
 
 .charts-grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(450px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(500px,1fr));
 gap:40px;
 margin-top:40px;
 }
 
 canvas{
 width:100% !important;
-height:320px !important;
+height:350px !important;
 background:#111;
 padding:20px;
 border-radius:12px;
@@ -107,11 +107,16 @@ AI-Based Study Tool Impact | Business Analytics Dashboard
 <div class="tab" onclick="switchTab('dashboard',this)">Analytics</div>
 </div>
 
+<!-- QUESTIONNAIRE TAB -->
 <div id="questionnaire" class="container">
-<h3>Research Overview</h3>
-<p>Structured questionnaire measuring AI usage, academic performance, productivity and behavioral impact across 250 students.</p>
+<h3>Research Instrument Overview</h3>
+<p>This study analyzes the impact of AI-based study tools on academic performance,
+productivity, and behavioral indicators using structured quantitative data from 250 students.</p>
+<p><b>Variables used:</b> CGPA, Study Hours, AI Usage, Assignment Time,
+Productivity, Satisfaction, Dependency, Grade Impact and more.</p>
 </div>
 
+<!-- DASHBOARD TAB -->
 <div id="dashboard" class="container hidden">
 
 <div class="grid">
@@ -132,7 +137,7 @@ AI-Based Study Tool Impact | Business Analytics Dashboard
 <canvas id="cgpaChart"></canvas>
 <canvas id="timeChart"></canvas>
 <canvas id="impactChart"></canvas>
-<canvas id="fieldChart"></canvas>
+<canvas id="qualityChart"></canvas>
 
 </div>
 
@@ -186,13 +191,21 @@ let p=Math.exp(-0.717*Math.abs(t)-0.416*t*t);
 document.getElementById("pvalue").innerText=p.toFixed(4);
 
 drawCharts(ai,data,meanAI,meanNon);
+
+document.getElementById("summary").innerHTML=
+"<b>Conclusion:</b><br><br>"+
+"AI adoption stands at "+adoption.toFixed(1)+"%. "+
+"AI users demonstrate a CGPA advantage of "+diff.toFixed(2)+" points. "+
+"Assignment completion efficiency improves by "+efficiency.toFixed(1)+"%. "+
+"t-statistic = "+t.toFixed(2)+" (p = "+p.toFixed(4)+"). "+
+(effect>0.8?"Effect size indicates strong impact.":"Effect size indicates moderate impact.");
 }
 
 function drawCharts(ai,data,meanAI,meanNon){
 
-Chart.defaults.color = "#cccccc";
+Chart.defaults.color="#ccc";
 
-/* 1️⃣ CGPA Comparison */
+/* CGPA Comparison */
 new Chart(document.getElementById("cgpaChart"),{
 type:'bar',
 data:{
@@ -207,17 +220,11 @@ options:{
 responsive:true,
 maintainAspectRatio:false,
 plugins:{legend:{display:false}},
-scales:{
-y:{
-min:6,
-max:10,
-ticks:{stepSize:0.5}
-}
-}
+scales:{y:{min:6,max:10}}
 }
 });
 
-/* 2️⃣ Time Efficiency */
+/* Time Efficiency */
 let avgBefore = ai.reduce((a,d)=>a+parseFloat(d.TimeBefore),0)/ai.length;
 let avgAfter  = ai.reduce((a,d)=>a+parseFloat(d.TimeAfter),0)/ai.length;
 
@@ -228,26 +235,21 @@ labels:["Before AI","After AI"],
 datasets:[{
 label:"Hours per Assignment",
 data:[avgBefore,avgAfter],
-backgroundColor:["#888","#ffffff"]
+backgroundColor:["#777","#ffffff"]
 }]
 },
 options:{
 responsive:true,
 maintainAspectRatio:false,
 plugins:{legend:{display:false}},
-scales:{
-y:{
-min:0,
-max:Math.ceil(avgBefore)+2
-}
-}
+scales:{y:{min:0,max:Math.ceil(avgBefore)+2}}
 }
 });
 
-/* 3️⃣ Academic Impact Distribution */
-let negative = data.filter(d=>d.GradeImpact<=2).length;
-let neutral  = data.filter(d=>d.GradeImpact==3).length;
-let positive = data.filter(d=>d.GradeImpact>=4).length;
+/* Grade Impact */
+let negative=data.filter(d=>d.GradeImpact<=2).length;
+let neutral=data.filter(d=>d.GradeImpact==3).length;
+let positive=data.filter(d=>d.GradeImpact>=4).length;
 
 new Chart(document.getElementById("impactChart"),{
 type:'bar',
@@ -263,56 +265,22 @@ options:{
 responsive:true,
 maintainAspectRatio:false,
 plugins:{legend:{display:false}},
-scales:{
-y:{beginAtZero:true}
-}
+scales:{y:{beginAtZero:true}}
 }
 });
 
-/* 4️⃣ Field-wise AI Adoption */
-let fields=[...new Set(data.map(d=>d.Field))];
+/* Quality & Satisfaction */
+let avgSat=ai.reduce((a,d)=>a+parseFloat(d.Satisfaction),0)/ai.length;
+let avgProd=ai.reduce((a,d)=>a+parseFloat(d.ProductivityImprove),0)/ai.length;
+let avgQual=ai.reduce((a,d)=>a+parseFloat(d.QualityImprove),0)/ai.length;
+let avgConcept=ai.reduce((a,d)=>a+parseFloat(d.ConceptHelp),0)/ai.length;
 
-let adoptionRates = fields.map(f=>{
-let group=data.filter(d=>d.Field==f);
-let aiGroup=group.filter(d=>d.UsesAI==1);
-return (aiGroup.length/group.length)*100;
-});
-
-new Chart(document.getElementById("fieldChart"),{
-type:'bar',
-data:{
-labels:fields.map(f=>"Field "+f),
-datasets:[{
-label:"AI Adoption %",
-data:adoptionRates,
-backgroundColor:"#ffffff"
-}]
-},
-options:{
-responsive:true,
-maintainAspectRatio:false,
-plugins:{legend:{display:false}},
-scales:{
-y:{
-min:0,
-max:100
-}
-}
-}
-});
-
-/* 5️⃣ Satisfaction & Productivity Trend */
-let avgSatisfaction = ai.reduce((a,d)=>a+parseFloat(d.Satisfaction),0)/ai.length;
-let avgProductivity = ai.reduce((a,d)=>a+parseFloat(d.ProductivityImprove),0)/ai.length;
-let avgQuality = ai.reduce((a,d)=>a+parseFloat(d.QualityImprove),0)/ai.length;
-let avgConcept = ai.reduce((a,d)=>a+parseFloat(d.ConceptHelp),0)/ai.length;
-
-new Chart(document.getElementById("cgpaDistribution"),{
+new Chart(document.getElementById("qualityChart"),{
 type:'bar',
 data:{
 labels:["Satisfaction","Productivity","Quality","Concept Understanding"],
 datasets:[{
-data:[avgSatisfaction,avgProductivity,avgQuality,avgConcept],
+data:[avgSat,avgProd,avgQual,avgConcept],
 backgroundColor:"#ffffff"
 }]
 },
@@ -320,39 +288,7 @@ options:{
 responsive:true,
 maintainAspectRatio:false,
 plugins:{legend:{display:false}},
-scales:{
-y:{
-min:1,
-max:5
-}
-}
-}
-});
-
-/* 6️⃣ Dependency & Critical Thinking */
-let avgDependency = ai.reduce((a,d)=>a+parseFloat(d.Dependency),0)/ai.length;
-let avgThinkingReduction = ai.reduce((a,d)=>a+parseFloat(d.ThinkingReduction),0)/ai.length;
-let avgRegulation = ai.reduce((a,d)=>a+parseFloat(d.RegulationSupport),0)/ai.length;
-
-new Chart(document.getElementById("timeComparison"),{
-type:'bar',
-data:{
-labels:["Dependency","Thinking Reduction","Support Regulation"],
-datasets:[{
-data:[avgDependency,avgThinkingReduction,avgRegulation],
-backgroundColor:["#ffffff","#999","#666"]
-}]
-},
-options:{
-responsive:true,
-maintainAspectRatio:false,
-plugins:{legend:{display:false}},
-scales:{
-y:{
-min:1,
-max:5
-}
-}
+scales:{y:{min:1,max:5}}
 }
 });
 
@@ -371,4 +307,3 @@ analyze(fullData);
 
 </body>
 </html>
-
